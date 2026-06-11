@@ -1,0 +1,43 @@
+services:
+
+  golang:
+    build: .
+    container_name: golang-dev
+
+    volumes:
+      - ./:/app
+
+    working_dir: /app
+
+    ports:
+      - "8080:8080"
+
+    tty: true
+
+  mysql:
+    image: mysql:8
+
+    container_name: mysql-local
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: productdb
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+
+    container_name: dynamodb-local
+
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+
+    ports:
+      - "8000:8000"
+
+volumes:
+  mysql_data:
